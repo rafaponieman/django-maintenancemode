@@ -24,7 +24,7 @@ setup(
     platforms = ["any"],
     url='http://code.google.com/p/django-maintenancemode/',
     download_url='',
-    packages=['maintenancemode', 'maintenancemode.conf',  'maintenancemode.conf.urls', 'maintenancemode.views'],
+    packages=['maintenancemode', 'maintenancemode.conf',  'maintenancemode.conf.urls'],
     include_package_data = False,
     classifiers=[
             'Development Status :: 4 - Beta',
