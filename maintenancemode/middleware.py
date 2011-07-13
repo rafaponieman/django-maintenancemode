@@ -1,10 +1,7 @@
 from django.conf import settings
-from django.core import urlresolvers
-
-from django.conf.urls import defaults
-defaults.handler503 = 'maintenancemode.views.defaults.temporary_unavailable'
-defaults.__all__.append('handler503')
-
+from django.template import RequestContext
+from maintenancemode.http import Http503
+from maintenancemode.shortcuts import render_to_503
 from maintenancemode.conf.settings import MAINTENANCE_MODE
 
 class MaintenanceModeMiddleware(object):
@@ -23,7 +20,8 @@ class MaintenanceModeMiddleware(object):
             return None
         
         # Otherwise show the user the 503 page
-        resolver = urlresolvers.get_resolver(None)
-        
-        callback, param_dict = resolver._resolve_special('503')
-        return callback(request, **param_dict)
+        return self.process_exception(request, Http503())
+
+    def process_exception(self,request,exception):
+        if isinstance(exception, Http503):
+            return render_to_503(context_instance=RequestContext(request))
