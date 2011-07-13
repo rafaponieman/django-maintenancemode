@@ -1,0 +1,94 @@
+Metadata-Version: 1.0
+Name: django-maintenancemode
+Version: 0.9.2
+Summary: Django-maintenancemode allows you to temporary shutdown your site for maintenance work
+Home-page: http://code.google.com/p/django-maintenancemode/
+Author: Remco Wendt
+Author-email: remco@maykinmedia.nl
+License: BSD
+Description: ======================
+        django-maintenancemode
+        ======================
+        
+        django-maintenancemode is a middleware that allows you to temporary shutdown
+        your site for maintenance work.
+        
+        Logged in users having staff credentials can still fully use
+        the site as can users visiting the site from an ip address defined in
+        Django's INTERNAL_IPS.
+        
+        
+        Installation
+        ============
+        
+        * Download django-maintenancemode from http://pypi.python.org/pypi/django-maintenancemode
+        or http://code.google.com/p/django-maintenancemode/
+        * Install using: `python setup.py install`
+        * In your Django settings file add maintenancemode to your MIDDLEWARE_CLASSES.
+        Make sure it comes after Django's AuthenticationMiddleware. Like so::
+        
+        MIDDLEWARE_CLASSES = (
+        'django.middleware.common.CommonMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.middleware.doc.XViewMiddleware',
+        
+        'maintenancemode.middleware.MaintenanceModeMiddleware',
+        )
+        
+        * django-maintenancemode works the same way as handling 404 or 500 error in
+        Django work. It adds a handler503 which you can override in your main urls.py
+        or you can add a 503.html to your templates directory.
+        * In your Django settings file add a variable called MAINTENANCE_MODE. Setting
+        this variable to True activates the middleware.
+        
+        
+        Configuration
+        =============
+        If you do not configure the settings below in your own project settings.py,
+        they assume default values:
+        
+        MAINTENANCE_MODE
+        Boolean. Enable/disable maintenance mode.
+        Default: False
+        
+        Some observations:
+        
+        * If user is logged in and staff member, the maintenance page is
+        not displayed.
+        
+        * If user's ip is in INTERNAL_IPS, the maintenance page is
+        not displayed.
+        
+        
+        Changes
+        =======
+        
+        0.9.2
+        -----
+        - Fixed an issue with setuptools, thanks for reporting this ksato9700
+        
+        0.9.1
+        -----
+        
+        - Tested django-maintenancemode with django-1.0 release (following the 1.0.X release branch)
+        - Bundled buildout.cfg and bootstrap with the source version of the project, allowing repeatable buildout
+        - The middleware now uses its own default config file, thanks to a patch by semente
+        - Use INTERNAL_IPS to check for users that need access. user.is_staff will stay in place for backwards incompatibility. Thanks for the idea Joshua Works
+        - Have setup.py sdist only distribute maintenancemode itself, no longer distribute tests and buildout stuff
+        - Use README and CHANGES in setup.py's long_description, stolen from Jeroen's djangorecipe :)
+        - Updated the documentation and now use pypi as the documentation source (link there from google code)
+        
+        0.9
+        -----
+        
+        First release
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Utilities
